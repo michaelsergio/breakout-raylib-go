@@ -12,6 +12,7 @@ var STARTING_LIVES = 3
 
 var BALL_RADIUS = float32(5.0)
 var BALL_INC_SPEED = float32(0.1)
+var BALL_START_OFFSET_Y = float32(5)
 
 var BOARD_INITIAL_X = float32(0)
 var BOARD_INITIAL_Y = float32(20)
@@ -49,4 +50,17 @@ var COLORS_CLASSIC = []rl.Color{
 	rl.Gold,
 }
 
-var COLORS = COLORS_CLASSIC
+var COLORS_ARKANOID = []rl.Color{
+	rl.LightGray,
+	rl.Red,
+	rl.Gold,
+	rl.Gold,
+	rl.Blue,
+	rl.Blue,
+	rl.Magenta,
+	rl.Magenta,
+	rl.Green,
+}
+
+// var COLORS = COLORS_CLASSIC
+var COLORS = COLORS_ARKANOID

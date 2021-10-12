@@ -2,16 +2,17 @@ package main
 
 import rl "github.com/gen2brain/raylib-go/raylib"
 
-func resetBall(ballPos, ballVel *rl.Vector2) {
-	ballPos.X = float32(5)
-	ballPos.Y = float32(200)
+func startBall(ballPos, ballVel *rl.Vector2) {
 	ballVel.X = float32(1)
 	ballVel.Y = float32(5)
 }
 
 func holdBall(ballPos, ballVel *rl.Vector2) {
+	startY := BOARD_INITIAL_Y + BRICK_INITIAL_Y +
+		float32(ROWS_OF_BRICKS)*(BRICK_HEIGHT+BRICK_PAD_Y) +
+		BALL_START_OFFSET_Y
 	ballPos.X = float32(5)
-	ballPos.Y = float32(200)
+	ballPos.Y = float32(startY)
 	ballVel.X = float32(0)
 	ballVel.Y = float32(0)
 }

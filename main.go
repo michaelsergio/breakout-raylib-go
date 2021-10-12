@@ -36,7 +36,7 @@ func processGameOverInput(game *Game) {
 
 func transitionToPlayingMode(game *Game) {
 	game.Mode = Playing
-	resetBall(&game.BallPos, &game.BallVel)
+	startBall(&game.BallPos, &game.BallVel)
 }
 
 func transitionToWaitBall(game *Game) {
