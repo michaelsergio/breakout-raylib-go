@@ -13,7 +13,7 @@ func ProcessInput(game *Game) {
 	} else if rl.IsKeyDown(rl.KeyLeft) {
 		game.PaddleRect.X -= game.PaddleVelX
 	}
-	game.PaddleRect.X = clamp(game.PaddleRect.X, 0.0, WINDOW_W)
+	game.PaddleRect.X = clamp(game.PaddleRect.X, 0.0, WINDOW_W-game.PaddleRect.Width)
 }
 
 func processStartInput(game *Game) {
