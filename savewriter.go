@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"strings"
 	"strconv"
+	"strings"
 )
 
 func ReadMaxScoreFile(path string) (SavedGames, error) {
@@ -39,4 +39,3 @@ func WriteMaxScoreFile(path string, save SavedGames) {
 	var content = fmt.Sprintf("MAX_SCORE=%d", save.MaxScore)
 	os.WriteFile(path, []byte(content), 0644)
 }
-

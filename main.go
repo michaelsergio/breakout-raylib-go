@@ -26,38 +26,36 @@ func processGameOverInput(game *Game) {
 	}
 }
 
-
 func transitionToPlayingMode(game *Game) {
-		game.Mode = Playing
-		resetBall(&game.BallPos, &game.BallVel)
+	game.Mode = Playing
+	resetBall(&game.BallPos, &game.BallVel)
 }
 func transitionToGameOverMode(game *Game) {
-		game.Mode = GameOver
-		holdBall(&game.BallPos, &game.BallVel)
+	game.Mode = GameOver
+	holdBall(&game.BallPos, &game.BallVel)
 
-		var isNewMaxScore = game.Score > game.MaxScore
-		if isNewMaxScore {
-			game.MaxScore = game.Score
-			game.SavedGames.MaxScore = game.Score
-			WriteMaxScoreFile(SAVE_GAME_FILE_PATH, game.SavedGames)
-		}
+	var isNewMaxScore = game.Score > game.MaxScore
+	if isNewMaxScore {
+		game.MaxScore = game.Score
+		game.SavedGames.MaxScore = game.Score
+		WriteMaxScoreFile(SAVE_GAME_FILE_PATH, game.SavedGames)
+	}
 }
 
 func transitionToNewGame(game *Game) {
 	holdBall(&game.BallPos, &game.BallVel)
 	resetPaddle(&game.PaddleRect, &game.PaddleVelX)
-	resetBricks(game.Bricks);
+	resetBricks(game.Bricks)
 	game.Score = 0
 	game.Lives = STARTING_LIVES
 	game.Mode = Start
 }
 
-
 func main() {
 	totalBricks := BRICKS_PER_ROW * ROWS_OF_BRICKS
 	game := Game{
 		Bricks: make([]Brick, totalBricks),
-	} 
+	}
 
 	gameSave, err := ReadMaxScoreFile(SAVE_GAME_FILE_PATH)
 	if err != nil {

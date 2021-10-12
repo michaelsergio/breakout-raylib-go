@@ -4,8 +4,8 @@ import "github.com/gen2brain/raylib-go/raylib"
 
 func Update(game *Game) {
 	// Update the ball velocity 1 tick
-	game.BallPos.X = game.BallPos.X + game.BallVel.X;
-	game.BallPos.Y = game.BallPos.Y + game.BallVel.Y;
+	game.BallPos.X = game.BallPos.X + game.BallVel.X
+	game.BallPos.Y = game.BallPos.Y + game.BallVel.Y
 
 	// Bounce off side walls
 	if game.BallPos.X > WINDOW_W || game.BallPos.X < 0 {
@@ -19,13 +19,13 @@ func Update(game *Game) {
 		game.BallVel.Y *= -1
 	}
 
-	// Reset to start. Add Death 
+	// Reset to start. Add Death
 	if game.BallPos.Y > WINDOW_H {
 		resetBall(&game.BallPos, &game.BallVel)
 		game.Lives--
 	}
 
-	if (game.Lives <= 0) {
+	if game.Lives <= 0 {
 		transitionToGameOverMode(game)
 	}
 
@@ -33,13 +33,13 @@ func Update(game *Game) {
 	if rl.CheckCollisionCircleRec(game.BallPos, BALL_RADIUS, game.PaddleRect) {
 		var paddleMid = game.PaddleRect.X + (game.PaddleRect.Width / 2.0)
 		var dVelX = collideXVel(paddleMid, game.BallPos.X, game.BallVel.X)
-		var changeV = rl.Vector2 {
+		var changeV = rl.Vector2{
 			X: dVelX,
 			Y: float32(-1.0),
 		}
 		game.BallVel = rl.Vector2Multiply(game.BallVel, changeV)
 		game.BallVel = rl.Vector2Add(game.BallVel,
-			rl.Vector2Scale( 
+			rl.Vector2Scale(
 				rl.Vector2Normalize(game.BallVel),
 				BALL_INC_SPEED))
 	}
@@ -53,24 +53,24 @@ func Update(game *Game) {
 
 				var mid = game.Bricks[i].Rec.X + (game.Bricks[i].Rec.Width / 2.0)
 				var dVelX = collideXVel(mid, game.BallPos.X, game.BallVel.X)
-				var changeV = rl.Vector2 {
+				var changeV = rl.Vector2{
 					X: dVelX,
 					Y: float32(-1.0),
 				}
 				game.BallVel = rl.Vector2Multiply(game.BallVel, changeV)
 				game.BallVel = rl.Vector2Add(game.BallVel,
-					rl.Vector2Scale( 
+					rl.Vector2Scale(
 						rl.Vector2Normalize(game.BallVel),
 						BALL_INC_SPEED))
-					}
-				}
+			}
+		}
 	}
 }
 
 // Return 1.0 or -1.0 depending on if the which side of the rect makes contact with the ball
 // The return value should be multipled by the x of the ball Velocity to change its movement.
 func collideXVel(mid, ballPosX, ballVelX float32) float32 {
-	isLeftSideOfRec := ballPosX < mid 
+	isLeftSideOfRec := ballPosX < mid
 	if isLeftSideOfRec {
 		if ballVelX > 0 { /* make sure it is negative */
 			return -1

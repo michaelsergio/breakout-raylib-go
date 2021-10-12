@@ -9,7 +9,7 @@ var BRICK_SCORE = 200
 
 var STARTING_LIVES = 3
 
-var	BALL_RADIUS = float32(5.0)
+var BALL_RADIUS = float32(5.0)
 var BALL_INC_SPEED = float32(0.1)
 
 var BRICK_HEIGHT = float32(15)
@@ -20,7 +20,7 @@ var BRICK_INITIAL_Y = float32(20)
 
 var BRICKS_PER_ROW = 13
 var ROWS_OF_BRICKS = 8
-var BRICK_WIDTH = WINDOW_W / float32(BRICKS_PER_ROW) - BRICK_PAD_X
+var BRICK_WIDTH = WINDOW_W/float32(BRICKS_PER_ROW) - BRICK_PAD_X
 
 var COLORS = []rl.Color{
 	rl.Pink,
