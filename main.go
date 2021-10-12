@@ -1,5 +1,8 @@
 package main
 
+import (
+	"fmt"
+)
 import "github.com/gen2brain/raylib-go/raylib"
 
 func ProcessInput(game *Game) {
@@ -32,8 +35,10 @@ func transitionToGameOverMode(game *Game) {
 		game.Mode = GameOver
 		holdBall(&game.BallPos, &game.BallVel)
 
-		if game.Score > game.MaxScore {
+		var isNewMaxScore = game.Score > game.MaxScore
+		if isNewMaxScore {
 			game.MaxScore = game.Score
+			WriteMaxScoreFile(SAVE_GAME_FILE_PATH, game.Score)
 		}
 }
 
@@ -46,14 +51,22 @@ func transitionToNewGame(game *Game) {
 	game.Mode = Start
 }
 
-func main() {
-	rl.InitWindow(int32(WINDOW_W), int32(WINDOW_H), "Breakout")
-	rl.SetTargetFPS(60)
 
+func main() {
 	totalBricks := BRICKS_PER_ROW * ROWS_OF_BRICKS
 	game := Game{
 		Bricks: make([]Brick, totalBricks),
 	} 
+
+	gameSave, err := ReadMaxScoreFile(SAVE_GAME_FILE_PATH)
+	if err != nil {
+		fmt.Printf("Failed to read file: %v\n", err)
+	} else {
+		game.MaxScore = gameSave.MaxScore
+	}
+
+	rl.InitWindow(int32(WINDOW_W), int32(WINDOW_H), "Breakout")
+	rl.SetTargetFPS(60)
 
 	transitionToNewGame(&game)
 

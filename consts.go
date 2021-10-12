@@ -2,6 +2,7 @@ package main
 
 import "github.com/gen2brain/raylib-go/raylib"
 
+var SAVE_GAME_FILE_PATH = "./saved_game.txt"
 var WINDOW_W = float32(800)
 var WINDOW_H = float32(450)
 var BRICK_SCORE = 200
