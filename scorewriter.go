@@ -8,10 +8,6 @@ import (
 	"strconv"
 )
 
-type SavedGames struct {
-	MaxScore int
-}
-
 func ReadMaxScoreFile(path string) (SavedGames, error) {
 	savedGames := SavedGames{}
 	data, err := os.ReadFile(path)
@@ -39,8 +35,8 @@ func ReadMaxScoreFile(path string) (SavedGames, error) {
 	return savedGames, nil
 }
 
-func WriteMaxScoreFile(path string, maxScore int) {
-	var content = fmt.Sprintf("MAX_SCORE=%d", maxScore)
+func WriteMaxScoreFile(path string, save SavedGames) {
+	var content = fmt.Sprintf("MAX_SCORE=%d", save.MaxScore)
 	os.WriteFile(path, []byte(content), 0644)
 }
 

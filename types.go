@@ -25,4 +25,9 @@ type Game struct {
 	Bricks []Brick
 	Mode GameMode
 	MaxScore int
+	SavedGames SavedGames
+}
+
+type SavedGames struct {
+	MaxScore int
 }

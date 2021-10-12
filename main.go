@@ -38,7 +38,8 @@ func transitionToGameOverMode(game *Game) {
 		var isNewMaxScore = game.Score > game.MaxScore
 		if isNewMaxScore {
 			game.MaxScore = game.Score
-			WriteMaxScoreFile(SAVE_GAME_FILE_PATH, game.Score)
+			game.SavedGames.MaxScore = game.Score
+			WriteMaxScoreFile(SAVE_GAME_FILE_PATH, game.SavedGames)
 		}
 }
 
