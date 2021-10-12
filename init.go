@@ -1,6 +1,6 @@
 package main
 
-import "github.com/gen2brain/raylib-go/raylib"
+import rl "github.com/gen2brain/raylib-go/raylib"
 
 func resetBall(ballPos, ballVel *rl.Vector2) {
 	ballPos.X = float32(5)
@@ -21,8 +21,8 @@ func resetBricks(bricks []Brick) {
 		x := i % BRICKS_PER_ROW
 		y := i / BRICKS_PER_ROW
 		bricks[i].Exists = true
-		bricks[i].Rec.X = BRICK_INITIAL_X + float32(x)*(BRICK_WIDTH+BRICK_PAD_X)
-		bricks[i].Rec.Y = BRICK_INITIAL_Y + (float32(y) * (BRICK_HEIGHT + BRICK_PAD_Y))
+		bricks[i].Rec.X = BOARD_INITIAL_X + BOARD_INITIAL_X + float32(x)*(BRICK_WIDTH+BRICK_PAD_X)
+		bricks[i].Rec.Y = BOARD_INITIAL_Y + BRICK_INITIAL_Y + (float32(y) * (BRICK_HEIGHT + BRICK_PAD_Y))
 		bricks[i].Rec.Width = float32(BRICK_WIDTH)
 		bricks[i].Rec.Height = float32(BRICK_HEIGHT)
 		bricks[i].Color = COLORS[y%len(COLORS)]

@@ -9,13 +9,13 @@ func Update(game *Game) {
 
 	// Bounce off side walls
 	if game.BallPos.X > WINDOW_W || game.BallPos.X < 0 {
-		game.BallPos.X = clamp(game.BallPos.X, 0, WINDOW_W)
+		game.BallPos.X = rl.Clamp(game.BallPos.X, 0, WINDOW_W)
 		game.BallVel.X *= -1
 	}
 
-	// Check for death
-	if game.BallPos.Y < 0 {
-		game.BallPos.Y = clamp(game.BallPos.Y, 0, WINDOW_H)
+	// Bounce off top wall
+	if game.BallPos.Y < 0+BOARD_INITIAL_Y {
+		game.BallPos.Y = rl.Clamp(game.BallPos.Y, 0+BOARD_INITIAL_Y, WINDOW_H)
 		game.BallVel.Y *= -1
 	}
 
@@ -32,13 +32,11 @@ func Update(game *Game) {
 	// Check for paddle collision
 	if rl.CheckCollisionCircleRec(game.BallPos, BALL_RADIUS, game.PaddleRect) {
 		playNoiseBar(game)
-		var paddleMid = game.PaddleRect.X + (game.PaddleRect.Width / 2.0)
-		var dVelX = collideXVel(paddleMid, game.BallPos.X, game.BallVel.X)
-		var changeV = rl.Vector2{
-			X: dVelX,
-			Y: float32(-1.0),
-		}
-		game.BallVel = rl.Vector2Multiply(game.BallVel, changeV)
+		norm := rl.Vector2Normalize(rl.Vector2{X: game.PaddleRect.X, Y: game.PaddleRect.Y})
+		reflect := Vector2Reflect(game.BallVel, norm)
+		game.BallVel.X = reflect.X
+		game.BallVel.Y = reflect.Y
+
 		game.BallVel = rl.Vector2Add(game.BallVel,
 			rl.Vector2Scale(
 				rl.Vector2Normalize(game.BallVel),
@@ -76,6 +74,15 @@ func Update(game *Game) {
 	}
 }
 
+// Code taken from raylib source directly
+func Vector2Reflect(v, normal rl.Vector2) rl.Vector2 {
+	result := rl.Vector2{}
+	dotProduct := rl.Vector2DotProduct(v, normal)
+	result.X = v.X - (2.0*normal.X)*dotProduct
+	result.Y = v.Y - (2.0*normal.Y)*dotProduct
+	return result
+}
+
 // Return 1.0 or -1.0 depending on if the which side of the rect makes contact with the ball
 // The return value should be multipled by the x of the ball Velocity to change its movement.
 func collideXVel(mid, ballPosX, ballVelX float32) float32 {
@@ -90,16 +97,6 @@ func collideXVel(mid, ballPosX, ballVelX float32) float32 {
 		}
 	}
 	return 1
-}
-
-func clamp(x, min, max float32) float32 {
-	if x > max {
-		return max
-	}
-	if x < min {
-		return min
-	}
-	return x
 }
 
 func playNoiseBrick(game *Game) {

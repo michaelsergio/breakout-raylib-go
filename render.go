@@ -45,6 +45,8 @@ func DrawUI(game *Game) {
 	DrawTextBarRight(strconv.FormatFloat(speed, 'f', 1, 32), 50)
 	DrawTextBarRight("Max Score", 320)
 	DrawTextBarRight(strconv.Itoa(game.MaxScore), 200)
+
+	rl.DrawLine(0, 20, int32(WINDOW_W), 20, rl.LightGray)
 }
 
 func Render(game *Game) {

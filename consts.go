@@ -13,11 +13,14 @@ var STARTING_LIVES = 3
 var BALL_RADIUS = float32(5.0)
 var BALL_INC_SPEED = float32(0.1)
 
+var BOARD_INITIAL_X = float32(0)
+var BOARD_INITIAL_Y = float32(20)
+
 var BRICK_HEIGHT = float32(15)
 var BRICK_PAD_X = float32(2)
 var BRICK_PAD_Y = float32(3)
 var BRICK_INITIAL_X = float32(0)
-var BRICK_INITIAL_Y = float32(20)
+var BRICK_INITIAL_Y = float32(40)
 
 var BRICKS_PER_ROW = 13
 var ROWS_OF_BRICKS = 8
