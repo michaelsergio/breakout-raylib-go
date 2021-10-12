@@ -9,6 +9,13 @@ func resetBall(ballPos, ballVel *rl.Vector2) {
 	ballVel.Y = float32(5)
 }
 
+func holdBall(ballPos, ballVel *rl.Vector2) {
+	ballPos.X = float32(5)
+	ballPos.Y = float32(200)
+	ballVel.X = float32(0)
+	ballVel.Y = float32(0)
+}
+
 func resetBricks(bricks []Brick) {
 	for i := 0; i < len(bricks); i++ {
 		x := i % BRICKS_PER_ROW

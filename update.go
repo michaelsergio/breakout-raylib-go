@@ -22,7 +22,11 @@ func Update(game *Game) {
 	// Reset to start. Add Death 
 	if game.BallPos.Y > WINDOW_H {
 		resetBall(&game.BallPos, &game.BallVel)
-		game.Death++
+		game.Lives--
+	}
+
+	if (game.Lives <= 0) {
+		transitionToGameOverMode(game)
 	}
 
 	// Check for paddle collision
@@ -63,9 +67,11 @@ func Update(game *Game) {
 	}
 }
 
-func collideXVel(rectMid, ballPosX, ballVelX float32) float32 {
-	isLeftSideOfPaddle := ballPosX < rectMid 
-	if isLeftSideOfPaddle {
+// Return 1.0 or -1.0 depending on if the which side of the rect makes contact with the ball
+// The return value should be multipled by the x of the ball Velocity to change its movement.
+func collideXVel(mid, ballPosX, ballVelX float32) float32 {
+	isLeftSideOfRec := ballPosX < mid 
+	if isLeftSideOfRec {
 		if ballVelX > 0 { /* make sure it is negative */
 			return -1
 		}

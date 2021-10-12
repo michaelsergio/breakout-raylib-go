@@ -6,6 +6,8 @@ var WINDOW_W = float32(800)
 var WINDOW_H = float32(450)
 var BRICK_SCORE = 200
 
+var STARTING_LIVES = 3
+
 var	BALL_RADIUS = float32(5.0)
 var BALL_INC_SPEED = float32(0.1)
 
