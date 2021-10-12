@@ -122,7 +122,6 @@ func Update(game *Game) {
 			Y: float32(-1.0),
 		}
 		game.BallVel = rl.Vector2Multiply(game.BallVel, changeV)
-		// game.BallVel = rl.Vector2Scale(game.BallVel, BALL_INC_SPEED)
 		game.BallVel = rl.Vector2Add(game.BallVel,
 			rl.Vector2Scale( 
 				rl.Vector2Normalize(game.BallVel),
@@ -143,7 +142,6 @@ func Update(game *Game) {
 					Y: float32(-1.0),
 				}
 				game.BallVel = rl.Vector2Multiply(game.BallVel, changeV)
-				// game.BallVel = rl.Vector2Scale(game.BallVel, BALL_INC_SPEED)
 				game.BallVel = rl.Vector2Add(game.BallVel,
 					rl.Vector2Scale( 
 						rl.Vector2Normalize(game.BallVel),
