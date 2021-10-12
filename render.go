@@ -62,6 +62,10 @@ func Render(game *Game) {
 		var text = fmt.Sprintf("Your Score is %d.", game.Score)
 		rl.DrawText(text, 200, 200, 40, rl.LightGray)
 		rl.DrawText("Press Enter to start a new game", 120, 260, 32, rl.LightGray)
+	} else if game.Mode == GameOverNewMaxScore {
+		rl.DrawText("NEW MAX SCORE!", int32(WINDOW_W)/3, 180, 32, rl.LightGray)
+		rl.DrawText(strconv.Itoa(game.Score), int32(WINDOW_W)/2-40, 220, 42, rl.LightGray)
+		rl.DrawText("Press Enter to start a new game", 120, 280, 32, rl.LightGray)
 	}
 
 	rl.EndDrawing()

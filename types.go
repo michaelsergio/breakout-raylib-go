@@ -15,6 +15,7 @@ const (
 	Playing
 	WaitBall
 	GameOver
+	GameOverNewMaxScore
 )
 
 type Game struct {

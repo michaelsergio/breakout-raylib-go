@@ -45,15 +45,20 @@ func transitionToWaitBall(game *Game) {
 
 }
 
+func transitionToGameOverNewMaxScoreMode(game *Game) {
+	game.Mode = GameOverNewMaxScore
+	game.MaxScore = game.Score
+	game.SavedGames.MaxScore = game.Score
+	WriteMaxScoreFile(SAVE_GAME_FILE_PATH, game.SavedGames)
+}
+
 func transitionToGameOverMode(game *Game) {
 	game.Mode = GameOver
 	holdBall(&game.BallPos, &game.BallVel)
 
 	var isNewMaxScore = game.Score > game.MaxScore
 	if isNewMaxScore {
-		game.MaxScore = game.Score
-		game.SavedGames.MaxScore = game.Score
-		WriteMaxScoreFile(SAVE_GAME_FILE_PATH, game.SavedGames)
+		transitionToGameOverNewMaxScoreMode(game)
 	}
 }
 
@@ -98,7 +103,7 @@ func main() {
 			processStartInput(&game)
 		} else if game.Mode == WaitBall {
 			processWaitBallInput(&game)
-		} else if game.Mode == GameOver {
+		} else if game.Mode == GameOver || game.Mode == GameOverNewMaxScore {
 			processGameOverInput(&game)
 		}
 		// Go this in start and playing mode
