@@ -23,7 +23,7 @@ var BRICKS_PER_ROW = 13
 var ROWS_OF_BRICKS = 8
 var BRICK_WIDTH = WINDOW_W/float32(BRICKS_PER_ROW) - BRICK_PAD_X
 
-var COLORS = []rl.Color{
+var COLORS_NEON = []rl.Color{
 	rl.Pink,
 	rl.Red,
 	rl.Orange,
@@ -33,3 +33,17 @@ var COLORS = []rl.Color{
 	rl.Purple,
 	rl.SkyBlue,
 }
+
+// Classic Palette
+var COLORS_CLASSIC = []rl.Color{
+	rl.Red,
+	rl.Red,
+	rl.Orange,
+	rl.Orange,
+	rl.Green,
+	rl.Green,
+	rl.Gold,
+	rl.Gold,
+}
+
+var COLORS = COLORS_CLASSIC
