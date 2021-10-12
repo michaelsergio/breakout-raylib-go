@@ -21,12 +21,12 @@ func Update(game *Game) {
 
 	// Reset to start. Add Death
 	if game.BallPos.Y > WINDOW_H {
-		resetBall(&game.BallPos, &game.BallVel)
 		game.Lives--
-	}
-
-	if game.Lives <= 0 {
-		transitionToGameOverMode(game)
+		if game.Lives <= 0 {
+			transitionToGameOverMode(game)
+		} else {
+			transitionToWaitBall(game)
+		}
 	}
 
 	// Check for paddle collision

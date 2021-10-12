@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/gen2brain/raylib-go/raylib"
+	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
 func DrawTextBar(txt string, x int32) {
@@ -55,6 +55,8 @@ func Render(game *Game) {
 	// Game Mode specific Drawing
 	if game.Mode == Start {
 		rl.DrawText("Press Enter to start", 200, 200, 40, rl.LightGray)
+	} else if game.Mode == WaitBall {
+		rl.DrawText("Press Enter to release ball", 120, 200, 40, rl.LightGray)
 	} else if game.Mode == GameOver {
 		rl.DrawText(strconv.Itoa(game.Score), 180, 0, 20, rl.LightGray)
 		var text = fmt.Sprintf("Your Score is %d.", game.Score)

@@ -13,6 +13,7 @@ type GameMode int
 const (
 	Start GameMode = iota
 	Playing
+	WaitBall
 	GameOver
 )
 

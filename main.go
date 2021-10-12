@@ -21,6 +21,13 @@ func processStartInput(game *Game) {
 		transitionToPlayingMode(game)
 	}
 }
+
+func processWaitBallInput(game *Game) {
+	if rl.IsKeyReleased(rl.KeyEnter) {
+		transitionToPlayingMode(game)
+	}
+}
+
 func processGameOverInput(game *Game) {
 	if rl.IsKeyReleased(rl.KeyEnter) {
 		transitionToNewGame(game)
@@ -31,6 +38,13 @@ func transitionToPlayingMode(game *Game) {
 	game.Mode = Playing
 	resetBall(&game.BallPos, &game.BallVel)
 }
+
+func transitionToWaitBall(game *Game) {
+	game.Mode = WaitBall
+	holdBall(&game.BallPos, &game.BallVel)
+
+}
+
 func transitionToGameOverMode(game *Game) {
 	game.Mode = GameOver
 	holdBall(&game.BallPos, &game.BallVel)
@@ -82,6 +96,8 @@ func main() {
 	for !rl.WindowShouldClose() {
 		if game.Mode == Start {
 			processStartInput(&game)
+		} else if game.Mode == WaitBall {
+			processWaitBallInput(&game)
 		} else if game.Mode == GameOver {
 			processGameOverInput(&game)
 		}
