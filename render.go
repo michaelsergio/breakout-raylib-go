@@ -3,8 +3,9 @@ package main
 import (
 	"strconv"
 	"fmt"
+	
+	"github.com/gen2brain/raylib-go/raylib"
 )
-import "github.com/gen2brain/raylib-go/raylib"
 
 
 func DrawTextBar(txt string, x int32) {
