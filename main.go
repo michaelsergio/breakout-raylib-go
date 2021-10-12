@@ -83,106 +83,101 @@ type Game struct {
 	BallVel rl.Vector2
 	PaddleRect rl.Rectangle
 	PaddleVelX float32
+	Bricks []Brick
 }
 
-func main() {
-	rl.InitWindow(int32(windowW), int32(windowH), "Breakout")
-	rl.SetTargetFPS(60)
 
-	game := Game{} 
-
-	resetBall(&game.BallPos, &game.BallVel)
-	resetPaddle(&game.PaddleRect, &game.PaddleVelX)
-
-	var bricks = make([]Brick, totalBricks)
-	resetBricks(bricks);
-
-	for !rl.WindowShouldClose() {
-
-		// input 
-		if rl.IsKeyDown(rl.KeyRight) {
-			game.PaddleRect.X += game.PaddleVelX
-		} else if rl.IsKeyDown(rl.KeyLeft) {
-			game.PaddleRect.X -= game.PaddleVelX
-		}
-		game.PaddleRect.X = clamp(game.PaddleRect.X, 0.0, windowW)
-
-
-		// update
-		game.BallPos.X = game.BallPos.X + game.BallVel.X;
-		game.BallPos.Y = game.BallPos.Y + game.BallVel.Y;
-
-		if game.BallPos.X > windowW || game.BallPos.X < 0 {
-			game.BallPos.X = clamp(game.BallPos.X, 0, windowW)
-			game.BallVel.X *= -1
-		}
-
-		if game.BallPos.Y < 0 {
-			game.BallPos.Y = clamp(game.BallPos.Y, 0, windowH)
-			game.BallVel.Y *= -1
-		}
-		// Reset to start. Add Death 
-		if game.BallPos.Y > windowH {
-			resetBall(&game.BallPos, &game.BallVel)
-			game.Death++
-		}
-
-		if rl.CheckCollisionCircleRec(game.BallPos, ballRadius, game.PaddleRect) {
-			var paddleMid = game.PaddleRect.X + (game.PaddleRect.Width / 2.0)
-			var dVelX = collideXVel(paddleMid, game.BallPos.X, game.BallVel.X)
-			var changeV = rl.Vector2 {
-				X: dVelX,
-				Y: float32(-1.0),
-			}
-			game.BallVel = rl.Vector2Multiply(game.BallVel, changeV)
-			game.BallVel = rl.Vector2Scale(game.BallVel, incSpeed)
-		}
-
-		for i := 0; i < len(bricks); i++ {
-			if bricks[i].Exists {
-				if rl.CheckCollisionCircleRec(game.BallPos, ballRadius, bricks[i].Rec) {
-					bricks[i].Exists = false
-					game.Score += BrickScore
-
-					var mid = bricks[i].Rec.X + (bricks[i].Rec.Width / 2.0)
-					var dVelX = collideXVel(mid, game.BallPos.X, game.BallVel.X)
-					var changeV = rl.Vector2 {
-						X: dVelX,
-						Y: float32(-1.0),
-					}
-					game.BallVel = rl.Vector2Multiply(game.BallVel, changeV)
-					game.BallVel = rl.Vector2Scale(game.BallVel, incSpeed)
-				}
-			}
-		}
-
-
-		// render
-		var speed = float64(rl.Vector2Length(game.BallVel))
-		rl.BeginDrawing()
-		rl.ClearBackground(rl.Black)
-		rl.DrawText("Lives", 10, 0, 20, rl.LightGray)
-		rl.DrawText(strconv.Itoa(game.Death), 80, 0, 20, rl.LightGray)
-		rl.DrawText("Score", 110, 0, 20, rl.LightGray)
-		rl.DrawText(strconv.Itoa(game.Score), 180, 0, 20, rl.LightGray)
-		rl.DrawText("Speed", 220, 0, 20, rl.LightGray)
-		rl.DrawText(strconv.FormatFloat(speed, 'f', 1, 32), 300, 0, 20, rl.LightGray)
-		rl.EndDrawing()
-
-		// Paddle
-		rl.DrawRectangleRec(game.PaddleRect, rl.LightGray)
-
-		// Bricks
-		for _, brick := range bricks {
-			if brick.Exists {
-				rl.DrawRectangleRec(brick.Rec, brick.Color)
-			}
-		}
-
-		// Ball
-		rl.DrawCircleV(game.BallPos, ballRadius, rl.Blue)
+func ProcessInput(game *Game) {
+	if rl.IsKeyDown(rl.KeyRight) {
+		game.PaddleRect.X += game.PaddleVelX
+	} else if rl.IsKeyDown(rl.KeyLeft) {
+		game.PaddleRect.X -= game.PaddleVelX
 	}
-	rl.CloseWindow()
+	game.PaddleRect.X = clamp(game.PaddleRect.X, 0.0, windowW)
+}
+
+func Update(game *Game) {
+
+	// Update the ball velocity 1 tock
+	game.BallPos.X = game.BallPos.X + game.BallVel.X;
+	game.BallPos.Y = game.BallPos.Y + game.BallVel.Y;
+
+	// Bounce off side walls
+	if game.BallPos.X > windowW || game.BallPos.X < 0 {
+		game.BallPos.X = clamp(game.BallPos.X, 0, windowW)
+		game.BallVel.X *= -1
+	}
+
+
+	// Check for death
+	if game.BallPos.Y < 0 {
+		game.BallPos.Y = clamp(game.BallPos.Y, 0, windowH)
+		game.BallVel.Y *= -1
+	}
+
+	// Reset to start. Add Death 
+	if game.BallPos.Y > windowH {
+		resetBall(&game.BallPos, &game.BallVel)
+		game.Death++
+	}
+
+
+	// Check for paddle collision
+	if rl.CheckCollisionCircleRec(game.BallPos, ballRadius, game.PaddleRect) {
+		var paddleMid = game.PaddleRect.X + (game.PaddleRect.Width / 2.0)
+		var dVelX = collideXVel(paddleMid, game.BallPos.X, game.BallVel.X)
+		var changeV = rl.Vector2 {
+			X: dVelX,
+			Y: float32(-1.0),
+		}
+		game.BallVel = rl.Vector2Multiply(game.BallVel, changeV)
+		game.BallVel = rl.Vector2Scale(game.BallVel, incSpeed)
+	}
+
+	// Check for brick collision
+	for i := 0; i < len(game.Bricks); i++ {
+		if game.Bricks[i].Exists {
+			if rl.CheckCollisionCircleRec(game.BallPos, ballRadius, game.Bricks[i].Rec) {
+				game.Bricks[i].Exists = false
+				game.Score += BrickScore
+
+				var mid = game.Bricks[i].Rec.X + (game.Bricks[i].Rec.Width / 2.0)
+				var dVelX = collideXVel(mid, game.BallPos.X, game.BallVel.X)
+				var changeV = rl.Vector2 {
+					X: dVelX,
+					Y: float32(-1.0),
+				}
+				game.BallVel = rl.Vector2Multiply(game.BallVel, changeV)
+				game.BallVel = rl.Vector2Scale(game.BallVel, incSpeed)
+			}
+		}
+	}
+}
+
+func Render (game *Game) {
+	var speed = float64(rl.Vector2Length(game.BallVel))
+	rl.BeginDrawing()
+	rl.ClearBackground(rl.Black)
+	rl.DrawText("Lives", 10, 0, 20, rl.LightGray)
+	rl.DrawText(strconv.Itoa(game.Death), 80, 0, 20, rl.LightGray)
+	rl.DrawText("Score", 110, 0, 20, rl.LightGray)
+	rl.DrawText(strconv.Itoa(game.Score), 180, 0, 20, rl.LightGray)
+	rl.DrawText("Speed", 220, 0, 20, rl.LightGray)
+	rl.DrawText(strconv.FormatFloat(speed, 'f', 1, 32), 300, 0, 20, rl.LightGray)
+	rl.EndDrawing()
+
+	// Paddle
+	rl.DrawRectangleRec(game.PaddleRect, rl.LightGray)
+
+	// Bricks
+	for _, brick := range game.Bricks {
+		if brick.Exists {
+			rl.DrawRectangleRec(brick.Rec, brick.Color)
+		}
+	}
+
+	// Ball
+	rl.DrawCircleV(game.BallPos, ballRadius, rl.Blue)
 }
 
 func collideXVel(rectMid, ballPosX, ballVelX float32) float32 {
@@ -199,3 +194,21 @@ func collideXVel(rectMid, ballPosX, ballVelX float32) float32 {
 	return 1
 }
 
+func main() {
+	rl.InitWindow(int32(windowW), int32(windowH), "Breakout")
+	rl.SetTargetFPS(60)
+
+	game := Game{} 
+	game.Bricks = make([]Brick, totalBricks)
+
+	resetBall(&game.BallPos, &game.BallVel)
+	resetPaddle(&game.PaddleRect, &game.PaddleVelX)
+	resetBricks(game.Bricks);
+
+	for !rl.WindowShouldClose() {
+		ProcessInput(&game)
+		Update(&game)
+		Render(&game)
+	}
+	rl.CloseWindow()
+}
