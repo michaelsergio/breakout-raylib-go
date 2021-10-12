@@ -46,8 +46,11 @@ func Update(game *Game) {
 	}
 
 	// Check for brick collision
+	// Also check for win while looping through bricks
+	didWin := true
 	for i := 0; i < len(game.Bricks); i++ {
 		if game.Bricks[i].Exists {
+			didWin = false
 			if rl.CheckCollisionCircleRec(game.BallPos, BALL_RADIUS, game.Bricks[i].Rec) {
 				playNoiseBrick(game)
 
@@ -67,6 +70,9 @@ func Update(game *Game) {
 						BALL_INC_SPEED))
 			}
 		}
+	}
+	if didWin {
+		transitionToLevelWon(game)
 	}
 }
 

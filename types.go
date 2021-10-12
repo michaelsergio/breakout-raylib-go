@@ -21,6 +21,7 @@ const (
 type Game struct {
 	Lives      int
 	Score      int
+	Level      int
 	BallPos    rl.Vector2
 	BallVel    rl.Vector2
 	PaddleRect rl.Rectangle

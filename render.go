@@ -11,6 +11,10 @@ func DrawTextBar(txt string, x int32) {
 	rl.DrawText(txt, x, 0, 20, rl.LightGray)
 }
 
+func DrawTextBarColor(txt string, x int32, color rl.Color) {
+	rl.DrawText(txt, x, 0, 20, color)
+}
+
 func DrawTextBarRight(txt string, x int32) {
 	rl.DrawText(txt, int32(WINDOW_W)-x, 0, 20, rl.LightGray)
 }
@@ -25,11 +29,17 @@ func DrawBricks(bricks []Brick) {
 
 func DrawUI(game *Game) {
 	var speed = float64(rl.Vector2Length(game.BallVel))
+	scoreColor := rl.LightGray
+	if game.Score > game.MaxScore {
+		scoreColor = rl.Gold
+	}
 
 	DrawTextBar("Lives", 10)
-	DrawTextBar(strconv.Itoa(game.Lives), 80)
-	DrawTextBar("Score", 110)
-	DrawTextBar(strconv.Itoa(game.Score), 180)
+	DrawTextBar(strconv.Itoa(game.Lives), 70)
+	DrawTextBar("Level", 110)
+	DrawTextBar(strconv.Itoa(game.Level), 170)
+	DrawTextBar("Score", 200)
+	DrawTextBarColor(strconv.Itoa(game.Score), 270, scoreColor)
 
 	DrawTextBarRight("Speed", 120)
 	DrawTextBarRight(strconv.FormatFloat(speed, 'f', 1, 32), 50)

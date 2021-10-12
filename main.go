@@ -42,7 +42,13 @@ func transitionToPlayingMode(game *Game) {
 func transitionToWaitBall(game *Game) {
 	game.Mode = WaitBall
 	holdBall(&game.BallPos, &game.BallVel)
+}
 
+func transitionToLevelWon(game *Game) {
+	game.Mode = WaitBall
+	holdBall(&game.BallPos, &game.BallVel)
+	resetBricks(game.Bricks)
+	game.Level++
 }
 
 func transitionToGameOverNewMaxScoreMode(game *Game) {
@@ -68,6 +74,7 @@ func transitionToNewGame(game *Game) {
 	resetBricks(game.Bricks)
 	game.Score = 0
 	game.Lives = STARTING_LIVES
+	game.Level = 1
 	game.Mode = Start
 }
 
