@@ -1,6 +1,6 @@
 package main
 
-import "github.com/gen2brain/raylib-go/raylib"
+import rl "github.com/gen2brain/raylib-go/raylib"
 
 type Brick struct {
 	Exists bool
@@ -27,6 +27,7 @@ type Game struct {
 	Mode       GameMode
 	MaxScore   int
 	SavedGames SavedGames
+	PongSound  rl.Sound
 }
 
 type SavedGames struct {

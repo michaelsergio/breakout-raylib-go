@@ -18,12 +18,12 @@ func ReadMaxScoreFile(path string) (SavedGames, error) {
 	var contents = string(data[:])
 	nlSplit := strings.Split(contents, "\n")
 	if len(nlSplit) == 0 {
-		return savedGames, errors.New("Count not read lines of file")
+		return savedGames, errors.New("count not read lines of file")
 	}
 	if strings.HasPrefix(nlSplit[0], "MAX_SCORE=") {
 		var eqSplit = strings.SplitAfterN(nlSplit[0], "=", 2)
 		if len(eqSplit) == 0 {
-			return savedGames, errors.New("Weirdly formatted MAX_SCORE")
+			return savedGames, errors.New("weirdly formatted MAX_SCORE")
 		}
 		var scoreStr = eqSplit[1]
 		score, err := strconv.Atoi(scoreStr)

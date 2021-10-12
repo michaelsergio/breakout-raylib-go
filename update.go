@@ -1,6 +1,6 @@
 package main
 
-import "github.com/gen2brain/raylib-go/raylib"
+import rl "github.com/gen2brain/raylib-go/raylib"
 
 func Update(game *Game) {
 	// Update the ball velocity 1 tick
@@ -31,6 +31,7 @@ func Update(game *Game) {
 
 	// Check for paddle collision
 	if rl.CheckCollisionCircleRec(game.BallPos, BALL_RADIUS, game.PaddleRect) {
+		playNoiseBar(game)
 		var paddleMid = game.PaddleRect.X + (game.PaddleRect.Width / 2.0)
 		var dVelX = collideXVel(paddleMid, game.BallPos.X, game.BallVel.X)
 		var changeV = rl.Vector2{
@@ -48,6 +49,8 @@ func Update(game *Game) {
 	for i := 0; i < len(game.Bricks); i++ {
 		if game.Bricks[i].Exists {
 			if rl.CheckCollisionCircleRec(game.BallPos, BALL_RADIUS, game.Bricks[i].Rec) {
+				playNoiseBrick(game)
+
 				game.Bricks[i].Exists = false
 				game.Score += BRICK_SCORE
 
@@ -91,4 +94,12 @@ func clamp(x, min, max float32) float32 {
 		return min
 	}
 	return x
+}
+
+func playNoiseBrick(game *Game) {
+	playNoiseBar(game)
+}
+
+func playNoiseBar(game *Game) {
+	rl.PlaySound(game.PongSound)
 }

@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
+
+	rl "github.com/gen2brain/raylib-go/raylib"
 )
-import "github.com/gen2brain/raylib-go/raylib"
 
 func ProcessInput(game *Game) {
 	// Paddle Movement
@@ -64,7 +65,16 @@ func main() {
 		game.MaxScore = gameSave.MaxScore
 	}
 
+	rl.InitAudioDevice()
+	defer rl.CloseAudioDevice()
+
+	pongSound := rl.LoadSound(AUDIO_FILE_PATH)
+	defer rl.UnloadSound(pongSound)
+	game.PongSound = pongSound
+
 	rl.InitWindow(int32(WINDOW_W), int32(WINDOW_H), "Breakout")
+	defer rl.CloseWindow()
+
 	rl.SetTargetFPS(60)
 
 	transitionToNewGame(&game)
@@ -82,5 +92,4 @@ func main() {
 		Update(&game)
 		Render(&game)
 	}
-	rl.CloseWindow()
 }
